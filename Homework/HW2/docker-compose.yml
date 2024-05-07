@@ -1,0 +1,22 @@
+version: "3"
+services:
+  app:
+    build: ./
+    image: detect_test
+    container_name: itri-bev-container
+    volumes:
+      - .:/docker
+    working_dir: /docker
+    environment:
+      - DISPLAY=host.docker.internal:0.0
+      - QT_DEBUG_PLUGINS=1
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - driver: nvidia
+            capabilities:
+              - gpu
+              - utility # nvidia-smi
+              - compute # CUDA
+              - video   # NVDEC/NVENC/NVCUVID. For instance to use a hardware accelerated ffmpeg. Skip it if you don't need it
